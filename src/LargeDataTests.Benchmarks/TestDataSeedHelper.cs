@@ -14,6 +14,75 @@ namespace LargeDataTests.Benchmarks
     {
         private static IMapper mapper = new MapperConfiguration(c => c.AddProfile<MappingProfile>()).CreateMapper();
 
+        public static async Task<AppDbContext> ByteArray_SystemJson_GetLoadedDatabaseWithJson(int count)
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+               .Options;
+
+            var dbContext = new AppDbContext(options);
+
+            var testDataValuesDtos = GetTestDataValues(count);
+            var testDataValuesItems = mapper.Map<ICollection<TestDataValuesItem>>(testDataValuesDtos);
+
+            var dataWithJson = new ByteArray_SystemJson_TestDataWithJsonSerialization()
+            {
+                TestDataValues = testDataValuesItems
+            };
+
+            dbContext.ByteArray_SystemJson_TestDataWithJsonSerializations.Add(dataWithJson);
+
+            await dbContext.SaveChangesAsync();
+
+            return dbContext;
+        }
+
+        public static async Task<AppDbContext> SystemJson_GetLoadedDatabaseWithJson(int count)
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+               .Options;
+
+            var dbContext = new AppDbContext(options);
+
+            var testDataValuesDtos = GetTestDataValues(count);
+            var testDataValuesItems = mapper.Map<ICollection<TestDataValuesItem>>(testDataValuesDtos);
+
+            var dataWithJson = new SystemJson_TestDataWithJsonSerialization()
+            {
+                TestDataValues = testDataValuesItems
+            };
+
+            dbContext.SystemJson_TestDataWithJsonSerializations.Add(dataWithJson);
+
+            await dbContext.SaveChangesAsync();
+
+            return dbContext;
+        }
+
+        public static async Task<AppDbContext> SystemJsonCompressed_GetLoadedDatabaseWithJson(int count)
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+               .Options;
+
+            var dbContext = new AppDbContext(options);
+
+            var testDataValuesDtos = GetTestDataValues(count);
+            var testDataValuesItems = mapper.Map<ICollection<TestDataValuesItem>>(testDataValuesDtos);
+
+            var dataWithJson = new SystemJsonCompressed_TestDataWithJsonSerialization()
+            {
+                TestDataValues = testDataValuesItems
+            };
+
+            dbContext.SystemJsonCompressed_TestDataWithJsonSerializations.Add(dataWithJson);
+
+            await dbContext.SaveChangesAsync();
+
+            return dbContext;
+        }
+
         public static async Task<AppDbContext> GetLoadedDatabaseWithJson(int count)
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -71,22 +140,10 @@ namespace LargeDataTests.Benchmarks
                 testValues.Add(new TestValuesDto()
                 {
                     Time = DateTime.Now.TimeOfDay.TotalSeconds,
-                    Value1 = randomazier.NextDouble(),
-                    Value2 = randomazier.NextDouble(),
-                    Value3 = randomazier.NextDouble(),
-                    Value4 = randomazier.NextDouble(),
-                    Value5 = randomazier.NextDouble(),
-                    Value6 = randomazier.NextDouble(),
-                    Value7 = randomazier.NextDouble(),
-                    Value8 = randomazier.NextDouble(),
-                    Value9 = randomazier.NextDouble(),
-                    Value10 = randomazier.NextDouble(),
-                    Value11 = randomazier.NextDouble(),
-                    Value12 = randomazier.NextDouble(),
-                    Value13 = randomazier.NextDouble(),
-                    Value14 = randomazier.NextDouble(),
-                    Value15 = randomazier.NextDouble(),
-                    Value16 = randomazier.NextDouble(),
+                    Values = Enumerable
+                        .Range(0, 16)
+                        .Select(i => randomazier.NextDouble())
+                        .ToArray()
                 });
             }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LargeDataTests.Domain.Entities
 {
-    public class TestDataValues : BaseTestDataValues
+    public class TestDataValues
     {
         public int Id { get; set; }
 

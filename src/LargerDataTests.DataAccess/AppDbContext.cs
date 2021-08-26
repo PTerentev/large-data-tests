@@ -8,9 +8,17 @@ namespace LargerDataTests.DataAccess
     {
         public DbSet<TestDataWithJsonSerialization> DataWithJsonSerializations { get; set; }
 
+        public DbSet<SystemJson_TestDataWithJsonSerialization> SystemJson_TestDataWithJsonSerializations { get; set; }
+
+        public DbSet<SystemJsonCompressed_TestDataWithJsonSerialization> SystemJsonCompressed_TestDataWithJsonSerializations { get; set; }
+
         public DbSet<TestDataWithoutSerialization> DataWithoutSerializations { get; set; }
 
+        public DbSet<ByteArray_SystemJson_TestDataWithJsonSerialization> ByteArray_SystemJson_TestDataWithJsonSerializations { get; set; }
+
         public DbSet<TestDataValues> TestDataValues { get; set; }
+
+        public DbSet<CustomTestData> CustomTestDatas { get; set; }
 
         /// <summary>
         /// Constructor.
@@ -27,7 +35,22 @@ namespace LargerDataTests.DataAccess
             modelBuilder
                 .Entity<TestDataWithJsonSerialization>()
                 .Property(e => e.TestDataValues)
-                .HasJsonConversion();
+                .HasNewtonsoftJsonConversion();
+
+            modelBuilder
+                .Entity<SystemJson_TestDataWithJsonSerialization>()
+                .Property(e => e.TestDataValues)
+                .HasSystemJsonConversion();
+
+            modelBuilder
+                .Entity<ByteArray_SystemJson_TestDataWithJsonSerialization>()
+                .Property(e => e.TestDataValues)
+                .HasSystemJsonByteArrayConversion();
+
+            modelBuilder
+                .Entity<SystemJsonCompressed_TestDataWithJsonSerialization>()
+                .Property(e => e.TestDataValues)
+                .HasSystemJsonCompressedConversion();
         }
     }
 }

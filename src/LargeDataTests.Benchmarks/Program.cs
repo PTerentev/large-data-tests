@@ -9,7 +9,12 @@ namespace LargeDataTests.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<TestDataBenchmark>();
+            BenchmarkRunner.Run<TestDataJsonBenchmark>();
+
+            //TestDataProcessingWatcher.Run(10000);
+            //TestDataProcessingWatcher.Run(100000);
+
+            //Console.ReadKey();
         }
     }
 }
